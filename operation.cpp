@@ -31,17 +31,11 @@ char** readFromFile(FILE* file, size_t *lines) {
 //функция разбития строки на массив слов
 char** strSplit(char* crudeData, size_t* box, const char sign) {
     size_t count = 0; //счётчик столбцов
-    char delim[2]; //массив символа, который делит слова
-    *(delim + 0) = sign;
-    *(delim + 1) = 0;
     char* tmp = crudeData; //временная строка
-    char* last = 0;
     char** result = 0; //массив слов
     while(*tmp) {
-        if(sign == *tmp){
+        if(sign == *tmp)
             count++;
-            last = tmp;
-        }
         tmp++;
     }
     count++;

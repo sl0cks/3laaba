@@ -1,4 +1,4 @@
- #include "logic.h"
+#include "logic.h"
 
 FuncReturningValue* getDataFromFileDo(const char* filename, const char* regiononename); //чтение данных из файла
 FuncReturningValue* calculationDataDo(char*** data, size_t lines, int numcolumn); //функция вычисления макс, мин, мед
@@ -66,10 +66,10 @@ FuncReturningValue* getDataFromFileDo(const char* filename, const char* regionon
 FuncReturningValue* calculationDataDo(char*** data, size_t lines, int numcolumn) {
     FuncReturningValue* smt = (FuncReturningValue*)malloc(sizeof(FuncReturningValue)); //структура, куда считываются данные
     if (smt != NULL) {
-        smt->calculation_res[NUM_MAX] = searchMax(data, lines, numcolumn);
-        smt->calculation_res[NUM_MIN] = searchMin(data, lines, numcolumn);
-        smt->calculation_res[NUM_MED] = searchMed(data, lines, numcolumn);
-        smt->graphic = serchForGraphic(data, lines, numcolumn);
+        smt->graphic = convertCharToDouble(data, lines, numcolumn);
+        smt->calculation_res[NUM_MAX] = searchMax(smt->graphic[1], lines);
+        smt->calculation_res[NUM_MIN] = searchMin(smt->graphic[1], lines);
+        smt->calculation_res[NUM_MED] = searchMed(smt->graphic[1], lines);
         smt->lines = lines;
         smt->numcolumns = numcolumn;
     }
@@ -89,3 +89,4 @@ void clean_All(FunctionArgument *arg) {
         clean2DArray(arg->table_headers, arg->columns);
     }
 }
+

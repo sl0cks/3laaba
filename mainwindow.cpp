@@ -16,7 +16,6 @@ MainWindow::~MainWindow()
 
 //функия при нажатии на открыть файл
 void MainWindow::on_pushButton_namefile_clicked() {
-    ///Users/ivankarpov/Desktop
     QString FileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", "CSV File (*.csv)"); //открывает каталог файлов
     ui->namefile->setText(FileName);
     if(FileName.isEmpty()) { //isEmpty() проверяет, является ли QString пустым
@@ -68,6 +67,8 @@ void MainWindow::on_pushButton_calculations_clicked() {
         };
         if ((size_t)struct_for_output.numcolumns > struct_for_output.columns)
             ui->error->setText("Вычисления недопустимы!");
+        if(struct_for_output.lines == 0)
+            ui->error->setText("Данный регион не найден!");
         else {
             FuncReturningValue* tmp = entryPoint(calculationData, &struct_for_output);
             tmp->table_headers = struct_for_output.table_headers;
@@ -201,13 +202,13 @@ void drawText(QPainter &paint, char** header, int numcolumn) {
 
 //функция для рисования графика
 void drawGraphic(QPainter &paint, double** dGr, size_t lines, double* metrics) {
-    if (abs(dGr[0][1]) < 10) {
+    if (abs(dGr[1][0]) < 10) {
         drawLine(paint, dGr, lines, 30, metrics);
-    } else if ((abs(dGr[0][1]) >= 10) && (abs(dGr[0][1]) <= 50)) {
+    } else if ((abs(dGr[1][0]) >= 10) && (abs(dGr[1][0]) <= 50)) {
         drawLine(paint, dGr, lines, 10, metrics);
-    } else if ((abs(dGr[0][1]) > 50) && (abs(dGr[0][1]) <= 80)) {
+    } else if ((abs(dGr[1][0]) > 50) && (abs(dGr[1][0]) <= 80)) {
         drawLine(paint, dGr, lines, 3, metrics);
-    } else if (abs(dGr[0][1]) > 80 ) {
+    } else if (abs(dGr[1][0]) > 80 ) {
         drawLine(paint, dGr, lines, 2, metrics);
     }
 }
@@ -216,16 +217,16 @@ void drawGraphic(QPainter &paint, double** dGr, size_t lines, double* metrics) {
 void drawLine(QPainter &paint, double** dGr, size_t lines, int n, double* metrics) {
     int count_max = 0, count_min = 0;
     for (size_t i = 0; i < lines - 1; i++) {
-        paint.drawLine((int)((dGr[i][0] - YEARS) * RATIO), (int)((-n)*dGr[i][1]), (int)((dGr[i+1][0] - YEARS) * RATIO), (int)((-n)*dGr[i+1][1]));
-        if (dGr[i][1] == metrics[NUM_MIN] && count_min == 0) {
-            paint.drawText((int)((dGr[i][0] - YEARS) * RATIO), (int)((-n)*dGr[i][1]), "MIN");
-            paint.drawText((int)((dGr[i][0] - YEARS) * RATIO), 0, QString::number(dGr[i][0]));
-            paint.drawText(-3, (int)((-n)*dGr[i][1]), QString::number(dGr[i][1]));
+        paint.drawLine((int)((dGr[0][i] - YEARS) * RATIO), (int)((-n)*dGr[1][i]), (int)((dGr[0][i+1] - YEARS) * RATIO), (int)((-n)*dGr[1][i+1]));
+        if (dGr[1][i] == metrics[NUM_MIN] && count_min == 0) {
+            paint.drawText((int)((dGr[0][i] - YEARS) * RATIO), (int)((-n)*dGr[1][i]), "MIN");
+            paint.drawText((int)((dGr[0][i] - YEARS) * RATIO), 0, QString::number(dGr[0][i]));
+            paint.drawText(-3, (int)((-n)*dGr[1][i]), QString::number(dGr[1][i]));
             count_min += 1;
-        } else if (dGr[i][1] == metrics[NUM_MAX] && count_max == 0) {
-            paint.drawText((int)((dGr[i][0] - YEARS) * RATIO), (int)((-n)*dGr[i][1]), "MAX");
-            paint.drawText((int)((dGr[i][0] - YEARS) * RATIO), 0, QString::number(dGr[i][0]));
-            paint.drawText(-3, (int)((-n)*dGr[i][1]), QString::number(dGr[i][1]));
+        } else if (dGr[1][i] == metrics[NUM_MAX] && count_max == 0) {
+            paint.drawText((int)((dGr[0][i] - YEARS) * RATIO), (int)((-n)*dGr[1][i]), "MAX");
+            paint.drawText((int)((dGr[0][i] - YEARS) * RATIO), 0, QString::number(dGr[0][i]));
+            paint.drawText(-3, (int)((-n)*dGr[1][i]), QString::number(dGr[1][i]));
             count_max += 1;
         }
         paint.drawLine(0, (int)((-n)*metrics[NUM_MED]), 580, (int)((-n)*metrics[NUM_MED]));

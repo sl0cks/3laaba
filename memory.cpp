@@ -20,20 +20,23 @@ void clean3DArray(char ***arr, size_t sizeX, size_t sizeY) {
 
 //функция выделения памяти под матрицу
 double** AllocateMatrix(size_t lines) {
-    double** tmp = (double**)malloc(sizeof(double*) * lines);
+    double** tmp = (double**)malloc(sizeof(double*) * GRAPH_VLAUE);
     if (tmp == NULL) {
         printf("error");
     } else {
-        for (size_t i = 0; i < lines; i++) {
-            *(tmp + i) = (double*)malloc(sizeof(double) * GRAPH_VLAUE);
+        for (size_t i = 0; i < GRAPH_VLAUE; i++) {
+            *(tmp + i) = (double*)malloc(sizeof(double) * lines);
             if (*(tmp + i) == NULL) {
-                free(*(tmp + i));
+                clean2DArrayDouble(tmp, i + 1);
+                tmp = NULL;
+                break;
             }
         }
     }
 
     return tmp;
 }
+
 void clean2DArrayDouble(double **arr, size_t size) {
     for (size_t i = 0; i < size; i++)
     {

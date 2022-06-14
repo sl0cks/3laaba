@@ -22,7 +22,7 @@ void clean3DArray(char ***arr, size_t sizeX, size_t sizeY) {
 double** AllocateMatrix(size_t lines) {
     double** tmp = (double**)malloc(sizeof(double*) * GRAPH_VLAUE);
     if (tmp == NULL) {
-        printf("error");
+        return tmp;
     } else {
         for (size_t i = 0; i < GRAPH_VLAUE; i++) {
             *(tmp + i) = (double*)malloc(sizeof(double) * lines);

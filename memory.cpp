@@ -19,7 +19,7 @@ void clean3DArray(char ***arr, size_t sizeX, size_t sizeY) {
 }
 
 //функция выделения памяти под матрицу
-double** memoryMatrix(size_t lines) {
+double** AllocateMatrix(size_t lines) {
     double** tmp = (double**)malloc(sizeof(double*) * lines);
     if (tmp == NULL) {
         free(tmp);

@@ -94,11 +94,11 @@ FuncReturningValue* calculationDataDo(char*** data, size_t lines, int numcolumn)
 void clean_All(FunctionArgument *arg) {
     if(arg->filename != NULL) {
         free(arg->filename);
-    } else if(arg->regionname != NULL) {
+    } if(arg->regionname != NULL) {
         free(arg->regionname);
-    } else if(arg->data != NULL) {
+    } if(arg->data != NULL) {
         clean3DArray(arg->data, arg->lines, arg->columns);
-    } else if(arg->table_headers != NULL) {
+    } if(arg->table_headers != NULL) {
         clean2DArray(arg->table_headers, arg->columns);
     }
 }

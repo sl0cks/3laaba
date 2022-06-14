@@ -27,7 +27,7 @@ double** AllocateMatrix(size_t lines) {
         for (size_t i = 0; i < GRAPH_VLAUE; i++) {
             *(tmp + i) = (double*)malloc(sizeof(double) * lines);
             if (*(tmp + i) == NULL) {
-                clean2DArrayDouble(tmp, i + 1);
+                clean2DArrayDouble(tmp, i);
                 tmp = NULL;
                 break;
             }

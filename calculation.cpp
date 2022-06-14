@@ -1,57 +1,35 @@
 #include "calculation.h"
 
 //функция вычисления максимального числа
-double searchMax(char*** data, size_t lines, int numcolumn) {
-    double maximum = atof(data[0][numcolumn - 1]);
+double searchMax(double* data, size_t lines) {
+    double maximum = data[0];
     for(size_t i = 1; i < lines; i++) {
-        const char *number = data[i][numcolumn - 1];
-        if (*number) {
-            double value = atof(number);
-            if (value > maximum)
-                maximum = value;
-        }
+        if (data[i] > maximum)
+            maximum = data[i];
     }
 
     return maximum;
 }
 
 //функция вычисления минимального числа
-double searchMin(char*** data, size_t lines, int numcolumn) {
-    double minimum = atof(data[0][numcolumn - 1]);
+double searchMin(double* data, size_t lines) {
+    double minimum = data[0];
     for(size_t i = 1; i < lines; i++) {
-        const char *number = data[i][numcolumn - 1];
-        if (*number) {
-            double value = atof(number);
-            if (value < minimum)
-                minimum = value;
-        }
+        if (data[i] < minimum)
+            minimum = data[i];
     }
 
     return minimum;
 }
 
 //функция вычисления среднего числа
-double searchMed(char*** data, size_t lines, int numcolumn) {
+double searchMed(double* data, size_t lines) {
     double medium = 0;
     size_t count = 0;
     for (size_t i = 0; i < lines; i++) {
-        const char *number = data[i][numcolumn - 1];
-        if (*number) {
-            medium += atof(number);
-            count++;
-        }
+        medium += data[i];
+        count++;
     }
 
     return medium / count;
-}
-
-//функция для запоминания значений для графика
-double **serchForGraphic(char*** data, size_t lines, int numcolumn) {
-    double** tmpgraph = AllocateMatrix(lines);
-    for (size_t i = 0; i < lines; i++) {
-        tmpgraph[i][0] = atof(data[i][0]);
-        tmpgraph[i][1] = atof(data[i][numcolumn - 1]);
-    }
-
-   return tmpgraph;
 }

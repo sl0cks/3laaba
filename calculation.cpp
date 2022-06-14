@@ -47,7 +47,7 @@ double searchMed(char*** data, size_t lines, int numcolumn) {
 
 //функция для запоминания значений для графика
 double **serchForGraphic(char*** data, size_t lines, int numcolumn) {
-    double** tmpgraph = memoryMatrix(lines);
+    double** tmpgraph = AllocateMatrix(lines);
     for (size_t i = 0; i < lines; i++) {
         tmpgraph[i][0] = atof(data[i][0]);
         tmpgraph[i][1] = atof(data[i][numcolumn - 1]);

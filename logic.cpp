@@ -32,16 +32,16 @@ FuncReturningValue* getDataFromFileDo(const char* filename, const char* regionon
     if(file != NULL && smt != NULL){
         size_t lines, box; //количество строк и колонок
         char **crudeData = readFromFile(file, &lines); //массив строк
-        if (crudeData == NULL) {
+        while (crudeData == NULL) {
             smt->is_file_error = true;
-            return smt;
+            break;
         }
         char ***data = (char***)malloc(sizeof(char**) * (lines - 1)); //массив строк, поделённых на слова
-        if (data == NULL) {
+        while (data == NULL) {
             smt->is_file_error = true;
             clean2DArray(crudeData, lines);
             free(data);
-            return smt;
+            break;
         }
         for(size_t i = 0; i < lines - 1; i++) {
            *(data + i) = strSplit(*(crudeData + (i + 1)), &box, ',');
@@ -53,11 +53,12 @@ FuncReturningValue* getDataFromFileDo(const char* filename, const char* regionon
         }
         lines--;
         char **table_headers = strSplit(*(crudeData + HEADER), &box, ',');
-        if (table_headers == NULL) {
+        while (table_headers == NULL) {
             clean2DArray(table_headers, box);
             clean3DArray(data, lines, box);
             smt->is_file_error = true;
-            return smt;
+            break;
+            file = NULL;
         }
         free(*(crudeData + HEADER));
         free(crudeData);
@@ -67,7 +68,7 @@ FuncReturningValue* getDataFromFileDo(const char* filename, const char* regionon
         smt->data = data;
         smt = sortingByRegion(smt, regiononename);
         fclose(file);
-    } else if (file == NULL) {
+    }  if (file == NULL) {
         smt->is_file_error = true;
     } else if (smt == NULL)
         fclose(file);
